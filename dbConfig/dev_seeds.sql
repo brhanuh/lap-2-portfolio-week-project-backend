@@ -1,0 +1,11 @@
+INSERT INTO habits
+VALUES
+
+
+INSERT INTO users
+VALUES
+
+
+
+INSERT INTO days
+VALUES
