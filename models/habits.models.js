@@ -5,7 +5,7 @@ module.exports = class Habit {
   constructor(data, user) {
     this.id = data.id;
     this.habitName = data.habitName;
-    this.frequency = data.frequency;
+    this.frequency = data.hours_per_day;
     this.date = data.date;
     this.user = {
       name: data.username,
@@ -17,8 +17,8 @@ module.exports = class Habit {
   static get all() {
     return new Promise(async (resolve, reject) => {
       try {
-        // const habitData = await db.query(`SELECT * FROM habits;`);
-        // const habits = habitData.rows.map((h) => new Habit(h));
+        const habitData = await db.query(`SELECT * FROM habits;`);
+        const habits = habitData.rows.map((h) => new Habit(h));
         resolve("inside model");
       } catch (error) {}
     });
