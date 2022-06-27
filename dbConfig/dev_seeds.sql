@@ -6,11 +6,22 @@ VALUES
 ('walking the cat', 2, '2022-06-27', 1);
 
 INSERT INTO users (username, email)
-VALUES
-('Summira Hussain', 'summirahussain@email.com'),
-('Hanibal Brhanu', 'hanibalbirhanu@email.com'),
-('Stuart Judd', 'stuartjudd@email.com'),
-('Syed Javaid', 'syedjavaid@email.com');
+VALUES(
+    'Summira Hussain',
+    'summirahussain@email.com'
+),
+(
+    'Hanibal Brhanu', 
+    'hanibalbirhanu@email.com'
+),
+(
+    'Stuart Judd', 
+    'stuartjudd@email.com'
+),
+(
+    'Syed Javaid', 
+    'syedjavaid@email.com'
+);
 
 
 INSERT INTO days (day_of_week, month, habit_id)

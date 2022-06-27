@@ -5,11 +5,11 @@ services:
     image: debug_client
     ports: 
       - 8080:8080
-    working_dir: /code
+    working_dir: /lap-2-portfolio-week-project-backend
     volumes:
       - type: bind
-        source: ./client
-        target: /code
+        source: ./
+        target: /lap-2-portfolio-week-project-backend
     command: [ "http-server" ]
   api:
     container_name: debug_dev_api

@@ -6,4 +6,4 @@ CREATE TABLE habits (
  hours_per_day int,
  date DATE,
  user_id int
-)
+);
