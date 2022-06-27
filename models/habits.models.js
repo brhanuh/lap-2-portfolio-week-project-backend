@@ -1,5 +1,5 @@
 // provisionally required in seed, should be init.js
-const db = require("../dbConfig/seedDev");
+const db = require("../dbConfig/init");
 
 const User = require('./users.models')
 
@@ -19,11 +19,28 @@ module.exports = class Habit {
     return new Promise(async (resolve, reject) => {
       try {
         const habitData = await db.query(`SELECT * FROM habits;`);
-        const habits = habitData.rows.map(h => new Habit(h));
-        resolve(habits);
+        const habits = habitData.rows.map((h) => new Habit(h));
+        resolve("inside model");
       } catch (error) {
-        reject("habit not found");
+        reject("Book not found");
       }
     });
   }
-}
+
+  static findById(id) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let habitData = await db.query(`SELECT habit FROM habits WHERE id=$1`, [
+          id,
+        ]);
+
+        let habit = new Habit(habitData.rows[0]);
+        resolve(habit);
+      } catch (error) {
+        reject("Book not found");
+      }
+    });
+  }
+
+  // end of class
+};
