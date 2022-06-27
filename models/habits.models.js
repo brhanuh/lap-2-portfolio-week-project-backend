@@ -1,11 +1,13 @@
 // provisionally required in seed, should be init.js
 const db = require("../dbConfig/init");
 
+const User = require('./users.models')
+
 module.exports = class Habit {
   constructor(data, user) {
     this.id = data.id;
     this.habitName = data.habitName;
-    this.frequency = data.hours_per_day;
+    this.hours_per_day = data.hours_per_day;
     this.date = data.date;
     this.user = {
       name: data.username,
@@ -13,7 +15,6 @@ module.exports = class Habit {
     };
   }
 
-  // database query wont work atm because there is no database rn. habitData and habits have beencommented out for now
   static get all() {
     return new Promise(async (resolve, reject) => {
       try {

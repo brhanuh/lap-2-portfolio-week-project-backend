@@ -10,7 +10,8 @@ services:
       - type: bind
         source: ./
         target: /lap-2-portfolio-week-project-backend
-    command: ["http-server"]
+    command: [ "http-server" ]
+
   api:
     container_name: debug_dev_api
     ports:

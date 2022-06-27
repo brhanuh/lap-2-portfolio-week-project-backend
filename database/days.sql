@@ -5,4 +5,4 @@ CREATE TABLE days (
  day_of_week varchar(30),
  month varchar(30),
  habit_id int
-)
+);

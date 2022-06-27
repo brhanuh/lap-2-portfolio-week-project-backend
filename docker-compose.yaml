@@ -1,7 +1,8 @@
 version: "3"
 services:
   api:
-    image: node:12.18.4
+    image: node:16.15.1
+
     working_dir: /lap-2-portfolio-week-project-backend
     volumes:
       - type: bind
@@ -13,4 +14,4 @@ services:
     environment:
       - POSTGRES_USER=futureproof
     volumes:
-      - "./db/migrations:/docker-entrypoint-initdb.d/:ro"
+      - './database:/docker-entrypoint-initdb.d/:ro'
