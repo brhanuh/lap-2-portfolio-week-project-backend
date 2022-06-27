@@ -1,16 +1,16 @@
-version: '3'
+version: "3"
 services:
   api:
     image: node:12.18.4
-    working_dir: /code
+    working_dir: /lap-2-portfolio-week-project-backend
     volumes:
       - type: bind
-        source: 
-        target: /code
+        source: ./
+        target: /lap-2-portfolio-week-project-backend
 
   db:
     image: postgres:12.4
-    environment: 
+    environment:
       - POSTGRES_USER=futureproof
     volumes:
       - "./db/migrations:/docker-entrypoint-initdb.d/:ro"
