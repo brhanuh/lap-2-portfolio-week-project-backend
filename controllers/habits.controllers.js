@@ -9,4 +9,32 @@ async function index(req, res) {
   }
 }
 
-module.exports = { index };
+async function show(req, res) {
+  try {
+    const habit = await Habit.findById(req.params.id);
+    res.status(200).json(habit);
+  } catch (error) {
+    res.status(404).json({ error });
+  }
+}
+
+async function create(req, res) {
+  try {
+    const habit = await Habit.create(req.body);
+    res.status(201).json(habit);
+  } catch (error) {
+    res.status(422).json({ error });
+  }
+}
+
+async function destroy(req, res) {
+  try {
+    const habit = await Habit.findById(req.params.id);
+    const resp = await book.destroy();
+    res.status(204).end();
+  } catch (error) {
+    res.status(404).json({ error });
+  }
+}
+
+module.exports = { index, show, create, destroy };
