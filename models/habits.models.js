@@ -1,7 +1,7 @@
 // provisionally required in seed, should be init.js
 const db = require("../dbConfig/init");
 
-const User = require('./users.models')
+const User = require("./users.models");
 
 module.exports = class Habit {
   constructor(data, user) {
@@ -20,7 +20,7 @@ module.exports = class Habit {
       try {
         const habitData = await db.query(`SELECT * FROM habits;`);
         const habits = habitData.rows.map((h) => new Habit(h));
-        resolve("inside model");
+        resolve(habits);
       } catch (error) {
         reject("Book not found");
       }
