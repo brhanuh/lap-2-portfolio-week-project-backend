@@ -1,0 +1,13 @@
+const Days = require('../models/days.model');
+
+
+async function index(req, res) {
+    try {
+      const days = await Days.all;
+      res.status(200).json(days);
+    } catch (error) {
+      res.status(500).json({ error });
+    }
+  }
+  
+  module.exports = { index };
