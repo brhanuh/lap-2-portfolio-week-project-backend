@@ -5,22 +5,26 @@ VALUES
 ('learning javascript', 4, '2022-06-27', 2),
 ('walking the cat', 2, '2022-06-27', 1);
 
-INSERT INTO users (username, email)
+INSERT INTO users (username, email, user_password)
 VALUES(
     'Summira Hussain',
-    'summirahussain@email.com'
+    'summirahussain@email.com',
+    'kdhgkqgdgy823gvj'
 ),
 (
     'Hanibal Brhanu', 
-    'hanibalbirhanu@email.com'
+    'hanibalbirhanu@email.com',
+    'ssqweqwsscjqwed376'
 ),
 (
     'Stuart Judd', 
-    'stuartjudd@email.com'
+    'stuartjudd@email.com',
+    'jydtqdbclsdhwsfkf7'
 ),
 (
     'Syed Javaid', 
-    'syedjavaid@email.com'
+    'syedjavaid@email.com',
+    'sakhdwjdghdjciedjeh88'
 );
 
 
