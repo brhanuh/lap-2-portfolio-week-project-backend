@@ -19,16 +19,6 @@ async function show(req, res) {
   }
 }
 
-// create function ow exists in auth.controllers, this one can be removed
-async function create(req, res) {
-  try {
-    const user = await User.create(req.body);
-    res.status(201).json(user);
-  } catch (err) {
-    res.status(422).json({ err });
-  }
-}
-
 async function destroy(req, res) {
   try {
     const user = await User.findById(req.params.id);
@@ -38,4 +28,4 @@ async function destroy(req, res) {
     res.status(404).json({ err });
   }
 }
-module.exports = { index, show, create, destroy };
+module.exports = { index, show, destroy };

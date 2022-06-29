@@ -11,9 +11,9 @@ router.post("/api/habits", habitsController.create);
 router.delete("/api/habits/:id", habitsController.destroy);
 
 // Users routes
-router.get("/", usersController.index);
-router.get("/:id", usersController.show);
-router.delete("/:id", usersController.destroy);
+router.get("/api/users", usersController.index);
+router.get("/api/users/:id", usersController.show);
+router.delete("/api/users/:id", usersController.destroy);
 
 // Authorisation routes
 router.post("/api/register", authControllers.registration);
