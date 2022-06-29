@@ -37,4 +37,13 @@ async function destroy(req, res) {
   }
 }
 
-module.exports = { index, show, create, destroy };
+async function update(req, res) {
+  try {
+    const habit = await Habit.findById(req.params.id);
+    res.status(200).json("inside update controller");
+  } catch (error) {
+    res.status(404).json({ error });
+  }
+}
+
+module.exports = { index, show, create, destroy, update };
