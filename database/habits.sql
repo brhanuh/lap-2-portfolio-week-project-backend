@@ -1,9 +1,11 @@
-DROP TABLE IF EXISTS  habits;
+DROP TABLE IF EXISTS habits;
 
 CREATE TABLE habits (
  id serial PRIMARY KEY,
+ habit_freq_type varchar(255),
  habit varchar(255),
- hours_per_day int,
+ habit_frequency int,
+ habit_aim_total int,
  date DATE,
  user_id int
 );

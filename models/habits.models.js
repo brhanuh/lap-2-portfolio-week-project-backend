@@ -5,13 +5,14 @@ module.exports = class Habit {
   constructor(data, user) {
     this.id = data.id;
     this.habit = data.habit;
-    this.hours_per_day = data.hours_per_day;
+    this.habit_freq_type = data.habit_freq_type;
+    this.habit_frequency = data.habit_frequency;
+    this.habit_aim_total = data.habit_aim_total;
     this.date = data.date;
     this.user_id = data.user_id;
-    // this.user = {
-    //   name: data.username,
-    //   path: `/${data.user_id}`,
-    // };
+    this.user = {
+      name: data.username
+    };
   }
 
   static get all() {
@@ -21,7 +22,7 @@ module.exports = class Habit {
         const habits = habitData.rows.map((h) => new Habit(h));
         resolve(habits);
       } catch (error) {
-        reject("Book not found");
+        reject("habit not found");
       }
     });
   }
@@ -45,7 +46,7 @@ module.exports = class Habit {
     return new Promise(async (resolve, reject) => {
       try {
         const { habit, hours_per_day, date, user_id } = habitData;
-        console.log(habitData);
+
         // let user = await User.findOrCreateByName(username);
         let newHabit = await db.query(
           `INSERT INTO habits (habit, hours_per_day, date, user_id) VALUES ($1, $2, $3, $4) RETURNING *`,
@@ -62,18 +63,22 @@ module.exports = class Habit {
   destroy() {
     return new Promise(async (resolve, reject) => {
       try {
-        const deleteHabit = db.query(
+        const deleteHabit = await db.query(
           `DELETE FROM habits WHERE id = $1 RETURNING user_id`,
           [this.id]
         );
 
         const user = await User.findById(deleteHabit.rows[0].user_id);
         const habits = await user.habits;
+        console.log(user);
         if (!habits.length) {
           await user.destroy();
         }
         resolve("Habit was deleted");
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+        reject("Habit could not be deleted");
+      }
     });
   }
 
