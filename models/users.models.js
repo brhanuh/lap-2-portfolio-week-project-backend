@@ -74,6 +74,7 @@ class User {
   static create(username, email, password) {
     return new Promise(async (resolve, reject) => {
       try {
+        console.log(username, email, password);
         let userData = await db.query(
           "INSERT INTO users (username, email, user_password) VALUES ($1, $2, $3) RETURNING *;",
           [username, email, password]
@@ -103,6 +104,20 @@ class User {
 
         resolve(user);
       } catch (error) {}
+    });
+  }
+
+  static findByEmail(email) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let result = await db.query(`SELECT * FROM users WHERE email = $1`, [
+          email,
+        ]);
+        let user = new User(result.rows[0]);
+        resolve(user);
+      } catch (error) {
+        reject(`Error retrieving user: ${err.message}`);
+      }
     });
   }
 }

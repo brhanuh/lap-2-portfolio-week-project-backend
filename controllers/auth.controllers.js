@@ -25,9 +25,9 @@ async function login(req, res) {
       throw new Error("User with this email not found");
     }
 
-    const authed = bcrypt.compare(req.body.password, user.password);
-    console.log(user);
-    console.log(authed);
+    const authed = bcrypt.compare(req.body.user_password, user.user_password);
+    console.log("user", user);
+    console.log("authed", authed);
 
     if (!!authed) {
       const payload = { username: user.username, email: user.email };
@@ -35,13 +35,13 @@ async function login(req, res) {
         if (err) {
           throw new Error("Error in token generation");
         }
-        console.log(token);
+        console.log(token, token);
         res.status(200).json({
           success: true,
           token: token,
         });
       };
-      jwt.sign(payload, process.env.SECRET, sendToken);
+      jwt.sign(payload, process.env.SECRET, { expiresIn: 60 }, sendToken);
     } else {
       throw new Error("User could not be authenticated");
     }
