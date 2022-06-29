@@ -13,7 +13,6 @@ router.delete("/api/habits/:id", habitsController.destroy);
 // Users routes
 router.get("/", usersController.index);
 router.get("/:id", usersController.show);
-// router.post("/", usersController.create);
 router.delete("/:id", usersController.destroy);
 
 // Authorisation routes

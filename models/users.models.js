@@ -71,13 +71,13 @@ class User {
     });
   }
 
-  static create(username, email, password) {
+  static create(username, email, user_password) {
     return new Promise(async (resolve, reject) => {
       try {
-        console.log(username, email, password);
+        console.log(username);
         let userData = await db.query(
           "INSERT INTO users (username, email, user_password) VALUES ($1, $2, $3) RETURNING *;",
-          [username, email, password]
+          [username, email, user_password]
         );
         let user = new User(userData.rows[0]);
         resolve(user);
