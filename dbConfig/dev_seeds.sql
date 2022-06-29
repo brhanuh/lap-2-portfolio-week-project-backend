@@ -1,9 +1,9 @@
-INSERT INTO habits (habit, hours_per_day, date, user_id)
+INSERT INTO habits (habit_freq_type, habit, habit_frequency, habit_aim_total, date, user_id)
 VALUES
-('running', 2,' 2022-06-22', 4),
-('going to the gym', 2, '2022-06-26', 3),
-('learning javascript', 4, '2022-06-27', 2),
-('walking the cat', 2, '2022-06-27', 1);
+( 'weekly', 'running', 3, 5, '2022-06-22', 4),
+( 'weekly','going to the gym', 1, 6, '2022-06-26', 3),
+( 'daily', 'learning javascript', 1, 2, '2022-06-27', 2),
+( 'monthly', 'walking the cat', 10, 20, '2022-06-27', 1);
 
 INSERT INTO users (username, email, user_password)
 VALUES(
