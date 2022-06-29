@@ -103,7 +103,9 @@ class User {
         }
 
         resolve(user);
-      } catch (error) {}
+      } catch (error) {
+        reject(error);
+      }
     });
   }
 
@@ -116,7 +118,7 @@ class User {
         let user = new User(result.rows[0]);
         resolve(user);
       } catch (error) {
-        reject(`Error retrieving user: ${err.message}`);
+        reject(`Error retrieving user: ${error.message}`);
       }
     });
   }
