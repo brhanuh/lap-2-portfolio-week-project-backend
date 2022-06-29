@@ -1,6 +1,4 @@
-// provisionally required in seed, should be init.js
 const db = require("../dbConfig/init");
-
 const User = require("./users.models");
 
 module.exports = class Habit {
@@ -31,7 +29,7 @@ module.exports = class Habit {
   static findById(id) {
     return new Promise(async (resolve, reject) => {
       try {
-        let habitData = await db.query(`SELECT habit FROM habits WHERE id=$1`, [
+        let habitData = await db.query(`SELECT * FROM habits WHERE id=$1`, [
           id,
         ]);
 
@@ -46,18 +44,36 @@ module.exports = class Habit {
   static async create(habitData) {
     return new Promise(async (resolve, reject) => {
       try {
-        const { habit, hoursPerDay, date, username } = habitData;
+        const { habit, hours_per_day, date, user_id } = habitData;
         console.log(habitData);
-        let user = await User.findOrCreateByName(username);
+        // let user = await User.findOrCreateByName(username);
         let newHabit = await db.query(
           `INSERT INTO habits (habit, hours_per_day, date, user_id) VALUES ($1, $2, $3, $4) RETURNING *`,
-          [habit, hoursPerDay, date, user.id]
+          [habit, hours_per_day, date, user_id]
         );
 
         resolve(newHabit.rows[0]);
       } catch (error) {
         reject("Habit could not be created");
       }
+    });
+  }
+
+  destroy() {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const deleteHabit = db.query(
+          `DELETE FROM habits WHERE id = $1 RETURNING user_id`,
+          [this.id]
+        );
+
+        const user = await User.findById(deleteHabit.rows[0].user_id);
+        const habits = await user.habits;
+        if (!habits.length) {
+          await user.destroy();
+        }
+        resolve("Habit was deleted");
+      } catch (error) {}
     });
   }
 
