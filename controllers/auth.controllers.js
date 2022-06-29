@@ -1,10 +1,53 @@
+const User = require("../models/users.models");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+
+// Need to create findByEmail function!!!
+
 async function registration(req, res) {
   try {
-    console.log("In auth controller");
-    res.status(201).json("In auth controller");
+    console.log(req.body);
+    const salt = await bcrypt.genSalt();
+    const hashed = await bcrypt.hash(req.body.passsword, salt);
+
+    await User.create({ ...req.body, password: hashed });
+    console.log(hashed);
+    res.status(201).json({ msg: "User Created" });
   } catch (error) {
-    res.status(422).json({ error });
+    res.status(500).json({ error });
   }
 }
 
-module.exports = registration;
+async function login(req, res) {
+  try {
+    const user = await User.findByEmail(req.body.email);
+    if (!user) {
+      throw new Error("User with this email not found");
+    }
+
+    const authed = bcrypt.compare(req.body.password, user.password);
+    console.log(user);
+    console.log(authed);
+
+    if (!!authed) {
+      const payload = { username: user.username, email: user.email };
+      const sendToken = (err, token) => {
+        if (err) {
+          throw new Error("Error in token generation");
+        }
+        console.log(token);
+        res.status(200).json({
+          success: true,
+          token: token,
+        });
+      };
+      jwt.sign(payload, process.env.SECRET, sendToken);
+    } else {
+      throw new Error("User could not be authenticated");
+    }
+  } catch (error) {
+    res.status(401).json({ err: err.message });
+  }
+}
+
+module.exports = { registration, login };
