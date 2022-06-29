@@ -5,6 +5,7 @@ class User {
     this.id = data.id;
     this.username = data.username;
     this.email = data.email;
+    this.user_password = data.user_password;
   }
 
   static get all() {
@@ -15,6 +16,7 @@ class User {
           id: u.id,
           username: u.username,
           email: u.email,
+          user_password: u.user_password,
         }));
         resolve(users);
       } catch (err) {
@@ -69,12 +71,13 @@ class User {
     });
   }
 
-  static create(username, email) {
+  static create(username, email, user_password) {
     return new Promise(async (resolve, reject) => {
       try {
+        console.log(username);
         let userData = await db.query(
-          "INSERT INTO users (username, email) VALUES ($1, $2) RETURNING *;",
-          [username, email]
+          "INSERT INTO users (username, email, user_password) VALUES ($1, $2, $3) RETURNING *;",
+          [username, email, user_password]
         );
         let user = new User(userData.rows[0]);
         resolve(user);
@@ -101,6 +104,20 @@ class User {
 
         resolve(user);
       } catch (error) {}
+    });
+  }
+
+  static findByEmail(email) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let result = await db.query(`SELECT * FROM users WHERE email = $1`, [
+          email,
+        ]);
+        let user = new User(result.rows[0]);
+        resolve(user);
+      } catch (error) {
+        reject(`Error retrieving user: ${err.message}`);
+      }
     });
   }
 }
