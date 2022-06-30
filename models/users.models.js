@@ -1,11 +1,19 @@
 const db = require("../dbConfig/init");
+const Habit = require('./habits.models');
 
 class User {
-  constructor(data) {
+  constructor(data, habit) {
     this.id = data.id;
     this.username = data.username;
     this.email = data.email;
     this.user_password = data.user_password;
+    this.habit = {
+        habit: data.habit,
+        frequency_type: data.habit_freq_type,
+        frequency: data.habit_frequency,
+        aim: data.habit_aim_total
+    };
+
   }
 
   static get all() {
@@ -60,11 +68,25 @@ class User {
   static findById(id) {
     return new Promise(async (resolve, reject) => {
       try {
-        let userData = await db.query("SELECT * FROM users WHERE id = $1;", [
-          id,
-        ]);
-        let user = new User(userData.rows[0]);
-        resolve(user);
+        let userData = await db.query(`SELECT users.username, habits.habit,
+                                              habits.habit_freq_type,
+                                              habits.habit_frequency,
+                                              habits.habit_aim_total
+                                              FROM habits
+                                              JOIN users
+                                              ON habits.user_id = users.id
+                                              WHERE habits.user_id = $1;`, [
+                                              id,
+                                              ]);
+        const users = userData.rows.map((u) => ({
+          username: u.username,
+          habit: u.habit,
+          habit_frequency_type: u.habit_freq_type,
+          habit_frequency: u.habit_frequency,
+          habit_aim: u.habit_aim_total
+        }));
+        console.log(userData.rows)
+        resolve(users);
       } catch (err) {
         reject("User not found");
       }
@@ -87,6 +109,7 @@ class User {
     });
   }
 
+  
   static findOrCreateByName(username) {
     return new Promise(async (resolve, reject) => {
       try {
@@ -103,7 +126,9 @@ class User {
         }
 
         resolve(user);
-      } catch (error) {}
+      } catch (error) {
+        reject(error);
+      }
     });
   }
 

@@ -1,6 +1,5 @@
 // provisionally required in seed, should be init.js
 const db = require("../dbConfig/init");
-
 const User = require("./users.models");
 
 module.exports = class Habit {
@@ -11,10 +10,8 @@ module.exports = class Habit {
     this.habit_frequency = data.habit_frequency;
     this.habit_aim_total = data.habit_aim_total;
     this.date = data.date;
+    // this.user_id = data.user_id;
     this.user_id = data.user_id;
-    this.user = {
-      name: data.username
-    };
   }
 
   static get all() {
@@ -32,7 +29,11 @@ module.exports = class Habit {
   static findById(id) {
     return new Promise(async (resolve, reject) => {
       try {
-        let habitData = await db.query(`SELECT habit FROM habits WHERE id=$1`, [
+        let habitData = await db.query(`SELECT habits.*, users.username
+                                               FROM habits
+                                               JOIN users
+                                               ON habits.user_id = users.id
+                                               WHERE habits.id=$1`, [
           id,
         ]);
 
@@ -47,17 +48,35 @@ module.exports = class Habit {
   static async create(habitData) {
     return new Promise(async (resolve, reject) => {
       try {
-        const { habit, hoursPerDay, date, username } = habitData;
-        console.log(habitData);
-        let user = await User.findOrCreateByName(username);
+        const { habit_freq_type, habit, habit_frequency, habit_aim_total, date, user_id } = habitData;
         let newHabit = await db.query(
-          `INSERT INTO habits (habit, hours_per_day, date, user_id) VALUES ($1, $2, $3, $4) RETURNING *`,
-          [habit, hoursPerDay, date, user.id]
+          `INSERT INTO habits ( habit_freq_type, habit, habit_frequency, habit_aim_total, date, user_id ) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
+          [ habit_freq_type, habit, habit_frequency, habit_aim_total, date, user_id]
         );
-
         resolve(newHabit.rows[0]);
       } catch (error) {
         reject("Habit could not be created");
+      }
+    });
+  }
+  
+  destroy() {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const deleteHabit = await db.query(
+          `DELETE FROM habits WHERE id = $1 RETURNING user_id`,
+          [this.id]
+        );
+        const user = await User.findById(deleteHabit.rows[0].user_id);
+        const habits = await user.habits;
+        console.log(user);
+        if (!habits.length) {
+          await user.destroy();
+        }
+        resolve("Habit was deleted");
+      } catch (error) {
+        console.log(error);
+        reject("Habit could not be deleted");
       }
     });
   }
