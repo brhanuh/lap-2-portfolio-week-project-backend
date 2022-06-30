@@ -96,13 +96,6 @@ module.exports = class Habit {
           `DELETE FROM habits WHERE id = $1 RETURNING user_id`,
           [this.id]
         );
-
-        // const user = await User.findById(deleteHabit.rows[0].user_id);
-        // const habits = await user.habits;
-        // console.log(user);
-        // if (!habits.length) {
-        //   await user.destroy();
-        // }
         resolve("Habit was deleted");
       } catch (error) {
         console.log(error);
@@ -115,8 +108,14 @@ module.exports = class Habit {
     return new Promise(async (resolve, reject) => {
       try {
         let updatedHabit = await db.query(
-          `UPDATE habits SET habit = $1 WHERE id = $2 RETURNING *`,
-          [newHabit.habit, id]
+          `UPDATE habits SET habit_freq_type = $1,habit = $2, habit_frequency= $3, habit_aim_total= $4 WHERE id = $5 RETURNING *`,
+          [
+            newHabit.habit_freq_type,
+            newHabit.habit,
+            newHabit.habit_frequency,
+            newHabit.habit_aim_total,
+            id,
+          ]
         );
         console.log(updatedHabit.rows[0]);
         resolve("Habit updated!");
