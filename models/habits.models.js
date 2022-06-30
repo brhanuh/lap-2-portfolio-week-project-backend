@@ -11,6 +11,8 @@ module.exports = class Habit {
     this.date = data.date;
     // this.user_id = data.user_id;
     this.user_id = data.user_id;
+
+
   }
 
   static get all() {
@@ -99,6 +101,21 @@ module.exports = class Habit {
       } catch (error) {
         console.log(error);
         reject("Habit could not be deleted");
+      }
+    });
+  }
+
+  static async updateHabit(id, newHabit) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let updatedHabit = await db.query(
+          `UPDATE habits SET habit = $1 WHERE id = $2 RETURNING *`,
+          [newHabit.habit, id]
+        );
+        console.log(updatedHabit.rows[0]);
+        resolve("Habit updated!");
+      } catch (error) {
+        reject("Habit could not be updated");
       }
     });
   }

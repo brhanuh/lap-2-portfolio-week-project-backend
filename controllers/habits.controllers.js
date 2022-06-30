@@ -39,7 +39,10 @@ async function destroy(req, res) {
 
 async function update(req, res) {
   try {
-    const habit = await Habit.findById(req.params.id);
+    const { id } = req.params;
+
+    const freshHabit = await Habit.updateHabit(id, req.body);
+
     res.status(200).json("inside update controller");
   } catch (error) {
     res.status(404).json({ error });
