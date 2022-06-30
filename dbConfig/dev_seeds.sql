@@ -3,6 +3,7 @@ VALUES
 ( 'weekly', 'running', 3, 5, '2022-06-22', 4),
 ( 'weekly','going to the gym', 1, 6, '2022-06-26', 3),
 ( 'daily', 'learning javascript', 1, 2, '2022-06-27', 2),
+( 'daily', 'drinking water', 3, 3, '2022-06-25', 4),
 ( 'monthly', 'walking the cat', 10, 20, '2022-06-27', 1);
 
 INSERT INTO users (username, email, user_password)
@@ -28,9 +29,3 @@ VALUES(
 );
 
 
-INSERT INTO days (day_of_week, month, habit_id)
-VALUES
-('Monday', 'June', 4),
-('Wednesday', 'June', 1),
-('Sunday', 'June', 2),
-('Monday', 'June', 3);
