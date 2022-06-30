@@ -1,4 +1,3 @@
-// provisionally required in seed, should be init.js
 const db = require("../dbConfig/init");
 const User = require("./users.models");
 
@@ -52,6 +51,7 @@ module.exports = class Habit {
         let newHabit = await db.query(
           `INSERT INTO habits ( habit_freq_type, habit, habit_frequency, habit_aim_total, date, user_id ) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
           [ habit_freq_type, habit, habit_frequency, habit_aim_total, date, user_id]
+
         );
         resolve(newHabit.rows[0]);
       } catch (error) {
@@ -67,6 +67,28 @@ module.exports = class Habit {
           `DELETE FROM habits WHERE id = $1 RETURNING user_id`,
           [this.id]
         );
+        const user = await User.findById(deleteHabit.rows[0].user_id);
+        const habits = await user.habits;
+        console.log(user);
+        if (!habits.length) {
+          await user.destroy();
+        }
+        resolve("Habit was deleted");
+      } catch (error) {
+        console.log(error);
+        reject("Habit could not be deleted");
+      }
+    });
+  }
+
+  destroy() {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const deleteHabit = await db.query(
+          `DELETE FROM habits WHERE id = $1 RETURNING user_id`,
+          [this.id]
+        );
+
         const user = await User.findById(deleteHabit.rows[0].user_id);
         const habits = await user.habits;
         console.log(user);

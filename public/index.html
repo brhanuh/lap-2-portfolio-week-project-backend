@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="https://avatars.githubusercontent.com/u/67379980?s=200&v=4"
+    />
+    <title>Lap 2 - Backend API</title>
+  </head>
+  <body>
+    <header>
+      <h1>Lap 2 - Backend API</h1>
+
+      <h2>Habits Routes</h2>
+
+      <article>
+        <details>
+          <summary>GET /api/habits</summary>
+          <details>
+            <summary>Example Response</summary>
+            <pre>
+[
+    {
+        id: Number,
+        habit: Number,
+        habit_freq_type: String,
+        habit_frequency: Number,
+        habit_aim_total: Number,
+        date: Date,
+        user_id: Number,
+        user: Object
+    },
+    {
+        id: Number,
+        habit: Number,
+        habit_freq_type: String,
+        habit_frequency: Number,
+        habit_aim_total: Number,
+        date: Date,
+        user_id: Number,
+        user: Object
+    } ...
+]
+                </pre
+            >
+          </details>
+        </details>
+      </article>
+
+      <article>
+        <details>
+          <summary>GET /api/habits/:id</summary>
+          <details>
+            <summary>Example Response</summary>
+            <pre>
+
+    {
+        id: Number,
+        habit: Number,
+        habit_freq_type: String,
+        habit_frequency: Number,
+        habit_aim_total: Number,
+        date: Date,
+        user_id: Number,
+        user: Object
+    }
+                    
+                </pre
+            >
+          </details>
+        </details>
+      </article>
+
+      <article>
+        <details>
+          <summary>POST /api/habits</summary>
+          <details>
+            <summary>Example Request</summary>
+            <pre>
+    {
+        habit: String,
+        hours_per_day: Number,
+        date: Date,
+        user_id: Number
+    }
+            </pre>
+          </details>
+          <details>
+            <summary>Example Response</summary>
+            <pre>
+    {
+        id: Number
+        habit: String,
+        hours_per_day: Number,
+        date: Date,
+        user_id: Number
+    }  
+                </pre
+            >
+          </details>
+        </details>
+      </article>
+
+      <article>
+        <details>
+          <summary>DELETE /api/habits/:id</summary>
+          <details>
+            <summary>Example Response</summary>
+            <pre>
+    {   
+        "Habit was deleted"
+    }   
+                </pre
+            >
+          </details>
+        </details>
+      </article>
+      <!-- ---------------------------- -->
+      <h2>Users Routes</h2>
+
+      <article>
+        <details>
+          <summary>GET /api/users</summary>
+          <details>
+            <summary>Example Response</summary>
+            <pre>
+[
+    {
+        id: Number,
+        username: String,
+        email: String,
+        password: String
+    },
+    {
+        id: Number,
+        username: String,
+        email: String,
+        password: String
+    } ...
+]
+                </pre
+            >
+          </details>
+        </details>
+      </article>
+
+      <article>
+        <details>
+          <summary>GET /api/habits/:id</summary>
+          <details>
+            <summary>Example Response</summary>
+            <pre>
+    {
+        id: Number,
+        username: String,
+        email: String,
+        password: String
+    }
+                </pre
+            >
+          </details>
+        </details>
+      </article>
+
+      <article>
+        <details>
+          <summary>DELETE /api/habits/:id</summary>
+          <details>
+            <summary>Example Response</summary>
+            <pre>
+    {
+        "User (ID number) was deleted"
+    }
+                </pre
+            >
+          </details>
+        </details>
+      </article>
+
+      <!-- ------------ -->
+
+      <h2>Days Routes</h2>
+
+      <article>
+        <details>
+          <summary>GET /api/days/</summary>
+          <details>
+            <summary>Example Response</summary>
+            <pre>
+[
+    {
+        id: Number,
+        day_of_week: String,
+        month: String,
+        habit: Object
+    },
+    {
+        id: Number,
+        day_of_week: String,
+        month: String,
+        habit: Object
+    }...
+]
+                </pre
+            >
+          </details>
+        </details>
+      </article>
+
+      <article>
+        <details>
+          <summary>GET /api/days/:id</summary>
+          <details>
+            <summary>Example Response</summary>
+            <pre>
+    {
+        id: Number,
+        day_of_week: String,
+        month: String,
+        habit: Object
+    }
+                </pre
+            >
+          </details>
+        </details>
+      </article>
+
+      <h2>Authorisation Routes</h2>
+
+      <article>
+        <details>
+          <summary>POST /api/register</summary>
+          <details>
+            <summary>Example Request</summary>
+            <pre>
+    {
+        username: String,
+        email: String,
+        user_password: String
+    }
+            </pre>
+          </details>
+          <details>
+            <summary>Example Response</summary>
+            <pre>
+    { msg: "User Created" }
+            </pre>
+          </details>
+        </details>
+      </article>
+
+      <article>
+        <details>
+          <summary>POST /api/login</summary>
+          <details>
+            <summary>Example Request</summary>
+            <pre>
+    {
+        email: String,
+        password: String
+    }
+            </pre>
+          </details>
+          <details>
+            <summary>Example Response</summary>
+            <pre>
+            
+    {
+        success: Boolean,
+        token: String,
+        id: Number,
+        user: String
+    }   
+                </pre
+            >
+          </details>
+        </details>
+      </article>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+    </header>
+  </body>
+</html>
