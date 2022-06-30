@@ -9,10 +9,7 @@ module.exports = class Habit {
     this.habit_frequency = data.habit_frequency;
     this.habit_aim_total = data.habit_aim_total;
     this.date = data.date;
-    // this.user_id = data.user_id;
     this.user_id = data.user_id;
-
-
   }
 
   static get all() {
@@ -30,13 +27,14 @@ module.exports = class Habit {
   static findById(id) {
     return new Promise(async (resolve, reject) => {
       try {
-        let habitData = await db.query(`SELECT habits.*, users.username
+        let habitData = await db.query(
+          `SELECT habits.*, users.username
                                                FROM habits
                                                JOIN users
                                                ON habits.user_id = users.id
-                                               WHERE habits.id=$1`, [
-          id,
-        ]);
+                                               WHERE habits.id=$1`,
+          [id]
+        );
 
         let habit = new Habit(habitData.rows[0]);
         resolve(habit);
@@ -49,11 +47,24 @@ module.exports = class Habit {
   static async create(habitData) {
     return new Promise(async (resolve, reject) => {
       try {
-        const { habit_freq_type, habit, habit_frequency, habit_aim_total, date, user_id } = habitData;
+        const {
+          habit_freq_type,
+          habit,
+          habit_frequency,
+          habit_aim_total,
+          date,
+          user_id,
+        } = habitData;
         let newHabit = await db.query(
           `INSERT INTO habits ( habit_freq_type, habit, habit_frequency, habit_aim_total, date, user_id ) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
-          [ habit_freq_type, habit, habit_frequency, habit_aim_total, date, user_id]
-
+          [
+            habit_freq_type,
+            habit,
+            habit_frequency,
+            habit_aim_total,
+            date,
+            user_id,
+          ]
         );
         resolve(newHabit.rows[0]);
       } catch (error) {
@@ -61,7 +72,7 @@ module.exports = class Habit {
       }
     });
   }
-  
+
   destroy() {
     return new Promise(async (resolve, reject) => {
       try {
@@ -69,12 +80,7 @@ module.exports = class Habit {
           `DELETE FROM habits WHERE id = $1 RETURNING user_id`,
           [this.id]
         );
-        const user = await User.findById(deleteHabit.rows[0].user_id);
-        const habits = await user.habits;
-        console.log(user);
-        if (!habits.length) {
-          await user.destroy();
-        }
+
         resolve("Habit was deleted");
       } catch (error) {
         console.log(error);
@@ -91,12 +97,12 @@ module.exports = class Habit {
           [this.id]
         );
 
-        const user = await User.findById(deleteHabit.rows[0].user_id);
-        const habits = await user.habits;
-        console.log(user);
-        if (!habits.length) {
-          await user.destroy();
-        }
+        // const user = await User.findById(deleteHabit.rows[0].user_id);
+        // const habits = await user.habits;
+        // console.log(user);
+        // if (!habits.length) {
+        //   await user.destroy();
+        // }
         resolve("Habit was deleted");
       } catch (error) {
         console.log(error);
