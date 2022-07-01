@@ -49,7 +49,7 @@ describe("User", () => {
     test("it resolves with author on successful db query", async () => {
       let userData = { id: 1, name: "TestUser" };
       jest.spyOn(db, "query").mockResolvedValueOnce({ rows: [userData] });
-      const result = await User.create("New Author");
+      const result = await User.create("TestUser");
       expect(result).toBeInstanceOf(User);
     });
   });
