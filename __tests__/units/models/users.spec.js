@@ -1,56 +1,56 @@
-const Habit = require("../../../models/habits.models");
-const User = require("../../../models/users.models");
+const User = require('../../../models/users.models');
+const pg = require('pg');
+jest.mock('pg');
 
-jest.mock("../../../models/users.models");
+const db = require('../../../dbConfig/init');
 
-const pg = require("pg");
-jest.mock("pg");
+describe('User', () => {
+    beforeEach(() => jest.clearAllMocks())
 
-const db = require("../../../dbConfig/init");
+    afterAll(() => jest.resetAllMocks())
 
-describe("User", () => {
-  beforeEach(() => jest.clearAllMocks());
-  afterAll(() => jest.resetAllMocks());
-
-  describe("all", () => {
-    test("Resolves with all users on successful db query", async () => {
-      jest.spyOn(db, "query").mockResolvedValueOnce({ rows: [{}, {}, {}, {}] });
-
-      const all = await User.all;
-
-      expect(all).toHaveLength(4);
+    describe('all', () => {
+        test('it resolves with Users on successful db query', async () => {
+            jest.spyOn(db, 'query')
+                .mockResolvedValueOnce({ rows: [{}, {}, {}]});
+            const all = await User.all;
+            expect(all).toHaveLength(3)
+        })
     });
-  });
 
-  describe("habits", () => {
-    test("it resolves with formatted books on successful db query", async () => {
-      jest.spyOn(db, "query").mockResolvedValueOnce({
-        rows: [
-          { id: 1, title: "habit1" },
-          { id: 2, title: "habit2" },
-        ],
-      });
-      let testUser = new User({ id: 1, name: "Test Author" });
-      const habits = await testUser.habits;
-      expect(habits).toHaveLength(2);
+  
+    describe('destroy', () => {
+        test('it resolves with message on successful db query', async () => {
+            jest.spyOn(db, 'query')
+                .mockResolvedValueOnce({ id: 1 });
+            let testUser = new User({ id: 1, username: 'Test Author', email:'test email', user_password:'test pw'})
+            const result = await testUser.destroy();
+            expect(result).toBe('User 1 was deleted')
+        })
     });
-  });
 
-  describe("findById", () => {
-    test("Resolves with author on successful db query", async () => {
-      let userData = { id: 1, name: "TestUser" };
-      jest.spyOn(db, "query").mockResolvedValueOnce({ rows: [userData] });
-      const result = await User.findById(1);
-      expect(result).toBeInstanceOf(User);
+    describe('create', () => {
+        test('it resolves with author on successful db query', async () => {
+            let userrData = { id: 1, username: 'Test Author', email:'test email', user_password:'test pw' }
+            jest.spyOn(db, 'query')
+                .mockResolvedValueOnce({rows: [ userrData] });
+            const result = await User.create('New user');
+            expect(result).toBeInstanceOf(User)
+        })
     });
-  });
 
-  describe("create", () => {
-    test("it resolves with author on successful db query", async () => {
-      let userData = { id: 1, name: "TestUser" };
-      jest.spyOn(db, "query").mockResolvedValueOnce({ rows: [userData] });
-      const result = await User.create("TestUser");
-      expect(result).toBeInstanceOf(User);
+    describe('findOrCreateByName', () => {
+        test('it calls on user.create if name not found', async () => {
+            let userData = { id: 1, username: 'Test Author', email:'test email', user_password:'test pw' }
+            jest.spyOn(db, 'query')
+                .mockResolvedValueOnce({rows: [ ] });
+            const createSpy = jest.spyOn(User, 'create')
+                .mockResolvedValueOnce(new User(userData));
+            const result = await User.findOrCreateByName('New User');
+            expect(createSpy).toHaveBeenCalled();
+            expect(result).toBeInstanceOf(User);
+        })
+
     });
-  });
-});
+    
+})

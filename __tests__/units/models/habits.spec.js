@@ -1,66 +1,53 @@
-const Habit = require("../../../models/habits.models");
-const User = require("../../../models/users.models");
 
-jest.mock("../../../models/users.models");
+const Habit = require('../../../models/habits.models');
+const User = require('../../../models/users.models');
 
-const pg = require("pg");
-jest.mock("pg");
+jest.mock('../../../models/users.models');
 
-const db = require("../../../dbConfig/init");
+const pg = require('pg');
+jest.mock('pg');
 
-describe("Habit", () => {
-  beforeEach(() => jest.clearAllMocks());
-  afterAll(() => jest.resetAllMocks());
+const db = require('../../../dbConfig/init');
 
-  describe("all", () => {
-    test("Resolves with Habits on successful db query", async () => {
-      jest.spyOn(db, "query").mockResolvedValueOnce({ rows: [{}, {}, {}, {}] });
+describe('Habit', () => {
+    beforeEach(() => jest.clearAllMocks())
+    
+    afterAll(() => jest.resetAllMocks())
 
-      const all = await Habit.all;
-      console.log(all);
-      expect(all).toHaveLength(4);
+    describe('all', () => {
+        test('it resolves with users on successful db query', async () => {
+            jest.spyOn(db, 'query')
+                .mockResolvedValueOnce({ rows: [{}, {}, {}]});
+            const all = await Habit.all;
+            expect(all).toHaveLength(3)
+        })
     });
-  });
 
-  describe("findById", () => {
-    test("Resolves with Habit by its ID on successful db query", async () => {
-      let habitData = {
-        id: 1,
-        habit: "test Habit",
-        habit_freq_type: "weekly",
-        habit_frequency: 5,
-        habit_aim_total: 5,
-        date: "2022-06-26T00:00:00.000Z",
-        user_id: 1,
-      };
-
-      jest
-        .spyOn(db, "query")
-        .mockResolvedValueOnce({ rows: [{ ...habitData, id: 1 }] });
-
-      const result = await Habit.findById(1);
-      console.log(result);
-      expect(result).toBeInstanceOf(Habit);
+    describe('findById', () => {
+        test('it resolves with habits on successful db query', async () => {
+            let habitData = { id: 1, title: 'Test Habit' }
+            jest.spyOn(db, 'query')
+                .mockResolvedValueOnce({rows: [ habitData] });
+            const result = await Habit.findById(1);
+            expect(result).toBeInstanceOf(Habit)
+        })
     });
-  });
 
-  describe("create", () => {
-    test("Resolves with habit on successful db query", async () => {
-      let habitData = {
-        id: 1,
-        habit: "test Habit",
-        habit_freq_type: "weekly",
-        habit_frequency: 5,
-        habit_aim_total: 5,
-        date: "2022-06-26T00:00:00.000Z",
-        user_id: 1,
-      };
-      jest
-        .spyOn(db, "query")
-        .mockResolvedValueOnce({ rows: [{ ...habitData, id: 1 }] });
-
-      const result = await Habit.create(habitData);
-      expect(result).toHaveProperty("id");
+    describe('create', () => {
+        test('it resolves with habit on successful db query', async () => {
+            let habitData = { habit_freq_type: "test daily",
+                habit: "test habit",
+                habit_frequency: 7,
+                habit_aim_total: 4,
+                date: "2022-02-20",
+                user_id: 1 }
+            jest.spyOn(db, 'query')
+                .mockResolvedValueOnce({rows: [ { ...habitData, id: 1 }] });
+            jest.spyOn(User, 'findOrCreateByName')
+                .mockResolvedValueOnce(new User({id: 1, name: 'Test User'}));
+            const result = await Habit.create(habitData);
+            expect(result).toHaveProperty('id')
+        })
     });
-  });
-});
+    
+})

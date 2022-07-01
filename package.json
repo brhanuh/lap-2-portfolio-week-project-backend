@@ -7,7 +7,8 @@
     "test": "jest",
     "start": "node listen.js",
     "dev": "nodemon listen.js",
-    "seedDev": "node dbConfig/seedDev.js"
+    "seedDev": "node dbConfig/seedDev.js",
+    "coverage": "jest --coverage --silent"
   },
   "repository": {
     "type": "git",
