@@ -68,7 +68,7 @@ class User {
     return new Promise(async (resolve, reject) => {
       try {
         let userData = await db.query(
-          `SELECT users.username, habits.habit,
+          `SELECT users.username, habits.id, habits.habit,
                                               habits.habit_freq_type,
                                               habits.habit_frequency,
                                               habits.habit_aim_total
@@ -84,6 +84,7 @@ class User {
           habit_frequency_type: u.habit_freq_type,
           habit_frequency: u.habit_frequency,
           habit_aim: u.habit_aim_total,
+          habit_id: u.id,
         }));
         console.log(userData.rows);
         resolve(users);
