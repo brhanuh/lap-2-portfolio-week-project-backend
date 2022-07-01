@@ -57,31 +57,12 @@ describe('habits endpoints', () => {
     });
 
 
-    it('should not create a new habit with over 255 characters', async () => {
+    it('should delete a habit', async () => {
         const res = await request(api)
-            .post('/api/habits')
-            .send({
-                habit_frequency_type: 'weekly',
-                habit: 'Testhhhlskhfljflsdjlfkjlkrj;eriweirrwke;k;werk;weik;jdfwhfhkwehhwhejrfhjhdflashfhwiefhwehfwlfhglewhfwhflwhfwrwrhelwhrwhflwhflwhfhfhflwfhlwefhlwefhlwkfhlwhflhefhewifhwihqlqqqllqwrhelrhwlf,afwlhwlhhrladfhl,welrlajslrlwerhlwrrhleiwlenflwerwleuwldnflwfhhlwhflwnwljfolwnfolwnflwhfwlonw,hfwhfwefj,fwfhwhflwhfhwhflwfwflwf;hwlf;wjrwfwhflwfhwyhfgwfbkwfholfhwfnwhfwlhwhfwhlrfhhfflhlehryhhehqherhherhehlhehleeieweiwehkwdhfsudfhowrfhukwfhksdholiwhabit',
-                habit_frequency: 5,
-                habit_aim_total: 7,
-                date: '2022-06-30',
-                user_id: 5
-            })
-        expect(res.statusCode).toEqual(422);
-        expect(res.body).toHaveProperty("err");
-
-        const habRes = await request(api).get('/api/habits/4');
-        expect(habRes.statusCode).toEqual(404);
-    });
-
-    it('should delete a book', async () => {
-        const res = await request(api)
-            .delete('/books/1')
+            .delete('/api/habits/1')
         expect(res.statusCode).toEqual(204);
 
-        const bookRes = await request(api).get('/books/1');
-        expect(bookRes.statusCode).toEqual(404);
-        expect(bookRes.body).toHaveProperty('err');
+        const habRes = await request(api).get('/api/habits/1');
+        expect(habRes.statusCode).toEqual(404);
     }); 
 })
