@@ -9,7 +9,7 @@ router.get("/api/habits", habitsController.index);
 router.get("/api/habits/:id", habitsController.show);
 router.post("/api/habits", habitsController.create);
 router.delete("/api/habits/:id", habitsController.destroy);
-router.patch("/api/habits/:id", habitsController.update);
+router.put("/api/habits/:id", habitsController.update);
 
 // Users routes
 router.get("/api/users", usersController.index);
